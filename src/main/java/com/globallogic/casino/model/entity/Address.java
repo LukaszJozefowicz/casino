@@ -1,4 +1,4 @@
-package com.globallogic.casino.model;
+package com.globallogic.casino.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,12 +12,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Table(name = "ADDRESSES")
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long addressId;
+    private String city;
     private String street;
-    private String houseNumber;
-    private Integer flatNumber;
+    private Integer houseNumber;
+    private String flatNumber;
     private String postCode;
 }

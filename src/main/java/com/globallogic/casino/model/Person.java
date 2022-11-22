@@ -1,14 +1,12 @@
 package com.globallogic.casino.model;
 
+import com.globallogic.casino.model.entity.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,9 +14,13 @@ import javax.persistence.OneToOne;
 @Setter
 @MappedSuperclass
 public abstract class Person {
+    @Column(name = "universal_id", nullable = false)
     private String universalId;
+    @Column(name = "first_name", nullable = false)
     private String firstName;
+    @Column(name = "last_name", nullable = false)
     private String lastName;
-    @OneToOne
-    private Address address;
+    @ManyToOne
+    @JoinColumn(name = "addressId", nullable = false)
+    private Address addressId;
 }

@@ -1,9 +1,19 @@
 package com.globallogic.casino.service.strategy;
 
-public class SlotMachineOperationStrategy implements GameOperationsStrategy {
-    @Override
-    public void startGame() {
+import com.globallogic.casino.model.entity.Customer;
+import com.globallogic.casino.model.entity.Game;
+import com.globallogic.casino.model.entity.Item;
 
+import java.util.List;
+
+public class SlotMachineOperationStrategy extends GameOperationsStrategy {
+    public SlotMachineOperationStrategy(List<Item> necessaryItems, List<Customer> players) {
+        super(necessaryItems, players);
+    }
+
+    @Override
+    public List<Customer> simulateGame() {
+        return null;
     }
 
     @Override

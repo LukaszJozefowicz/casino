@@ -1,9 +1,17 @@
-package com.globallogic.casino.model;
+package com.globallogic.casino.model.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Document
 public class DailyReport {
+    @Id
+    private Long id;
+    @CreatedDate
     private LocalDate reportDate;
     private BigDecimal totalIncome;
     private Integer totalGamesPlayed;

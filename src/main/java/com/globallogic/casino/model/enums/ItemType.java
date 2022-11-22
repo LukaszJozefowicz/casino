@@ -11,6 +11,5 @@ public enum ItemType {
     ROULETTE_BALL,
     HIGH_BAR_CHAIR,
     COMFY_CHAIR,
-    SIMPLE_CHAIR,
-    DICE
+    SIMPLE_CHAIR
 }
