@@ -1,19 +1,14 @@
 package com.globallogic.casino.service.impl;
 
-import com.globallogic.casino.exception.CannotStartGameException;
 import com.globallogic.casino.exception.EntityNotFoundException;
-import com.globallogic.casino.model.dto.CustomerDto;
 import com.globallogic.casino.model.dto.GameDto;
 import com.globallogic.casino.model.dto.ItemDto;
-import com.globallogic.casino.model.entity.Customer;
-import com.globallogic.casino.model.entity.Game;
-import com.globallogic.casino.model.entity.Item;
-import com.globallogic.casino.model.enums.GameType;
+import com.globallogic.casino.model.entity.h2.Customer;
+import com.globallogic.casino.model.entity.h2.Game;
+import com.globallogic.casino.model.strategy.*;
 import com.globallogic.casino.repository.CustomerRepository;
 import com.globallogic.casino.repository.GameRepository;
-import com.globallogic.casino.repository.ItemRepository;
 import com.globallogic.casino.service.GameService;
-import com.globallogic.casino.service.strategy.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -38,20 +33,22 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void simulateGame(Long gameId) {
+    public String simulateGame(Long gameId, long playerBet) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException(Game.class, gameId));
 
-        GameOperationsStrategy currentStrategy = getStrategyByGameType(game.getGameType(), game.getNecessaryItems(), game.getPlayers());
-        List<Customer> gameParticipants = currentStrategy.simulateGame();
-        updateGameParticipantsData(gameParticipants);
+        GameOperationsStrategy currentStrategy = getStrategyByGameType(game);
+        Game gamePlayed = currentStrategy.simulateGame(playerBet);
+        customerRepository.saveAll(gamePlayed.getPlayers());
+        gameRepository.save(gamePlayed);
+        return gamePlayed.getGameResultMessage();
     }
 
     @Override
-    public List<ItemDto> checkItems(Long gameId) {
+    public List<ItemDto> checkGameItems(Long gameId) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException(Game.class, gameId));
-        GameOperationsStrategy currentStrategy = getStrategyByGameType(game.getGameType(), game.getNecessaryItems(), game.getPlayers());
+        GameOperationsStrategy currentStrategy = getStrategyByGameType(game);
 
         if (!currentStrategy.checkItems()) {
             log.warn("Check the items in game with id: "
@@ -65,16 +62,16 @@ public class GameServiceImpl implements GameService {
                 .collect(Collectors.toList());
     }
 
-    private void updateGameParticipantsData(List<Customer> players) {
-        customerRepository.saveAll(players);
-    }
+//    private void updateGameParticipantsData(List<Customer> players) {
+//        customerRepository.saveAll(players);
+//    }
 
-    private GameOperationsStrategy getStrategyByGameType(GameType gameType, List<Item> necessaryItems, List<Customer> players) {
-        return switch (gameType) {
-            case POKER -> new PokerOperationStrategy(necessaryItems, players);
-            case SLOT_MACHINE -> new SlotMachineOperationStrategy(necessaryItems, players);
-            case BLACKJACK -> new BlackJackOperationStrategy(necessaryItems, players);
-            case ROULETTE -> new RouletteOperationStrategy(necessaryItems, players);
+    private GameOperationsStrategy getStrategyByGameType(Game game) {
+        return switch (game.getGameType()) {
+            case POKER -> new PokerOperationStrategy(game);
+            case SLOT_MACHINE -> new SlotMachineOperationStrategy(game);
+            case BLACKJACK -> new BlackJackOperationStrategy(game);
+            case ROULETTE -> new RouletteOperationStrategy(game);
         };
     }
 }

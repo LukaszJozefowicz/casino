@@ -1,7 +1,7 @@
 package com.globallogic.casino.service;
 
-import com.globallogic.casino.model.entity.Game;
-import com.globallogic.casino.model.entity.Item;
+import com.globallogic.casino.model.entity.h2.Game;
+import com.globallogic.casino.model.entity.h2.Item;
 import com.globallogic.casino.model.enums.ItemType;
 
 public interface ItemService {

@@ -1,6 +1,6 @@
 package com.globallogic.casino.model;
 
-import com.globallogic.casino.model.entity.Address;
+import com.globallogic.casino.model.entity.h2.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

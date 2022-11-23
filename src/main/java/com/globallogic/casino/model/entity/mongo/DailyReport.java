@@ -1,5 +1,6 @@
-package com.globallogic.casino.model.entity;
+package com.globallogic.casino.model.entity.mongo;
 
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,6 +9,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Document
+@NoArgsConstructor
+@Getter
+@Setter
 public class DailyReport {
     @Id
     private Long id;
@@ -15,11 +19,8 @@ public class DailyReport {
     private LocalDate reportDate;
     private BigDecimal totalIncome;
     private Integer totalGamesPlayed;
-    private Integer rouletteTimesPlayed;
-    private Integer slotMachineTimesPlayed;
-    private Integer pokerTimesPlayed;
-    private Integer blackjackTimesPlayed;
-    private Integer totalCustomersServed;
-    private Integer totalNewCustomersRegistered;
-    private Integer totalCustomersRemoved;
+    private GameReport pokerReport;
+    private GameReport blackJackReport;
+    private GameReport rouletteReport;
+    private GameReport slotMachinesReport;
 }

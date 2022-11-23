@@ -1,8 +1,8 @@
 package com.globallogic.casino.service.impl;
 
 import com.globallogic.casino.exception.EntityNotFoundException;
-import com.globallogic.casino.model.entity.Employee;
-import com.globallogic.casino.model.entity.Game;
+import com.globallogic.casino.model.entity.h2.Employee;
+import com.globallogic.casino.model.entity.h2.Game;
 import com.globallogic.casino.model.dto.EmployeeDto;
 import com.globallogic.casino.repository.EmployeeRepository;
 import com.globallogic.casino.repository.GameRepository;
@@ -28,5 +28,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setAssignedGame(game);
         Employee savedEmployee =  employeeRepository.save(employee);
         return modelMapper.map(savedEmployee, EmployeeDto.class);
+    }
+
+    @Override
+    public EmployeeDto addEmployee() {
+        return null;
     }
 }

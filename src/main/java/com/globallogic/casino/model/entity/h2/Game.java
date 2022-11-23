@@ -1,9 +1,8 @@
-package com.globallogic.casino.model.entity;
+package com.globallogic.casino.model.entity.h2;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.globallogic.casino.model.enums.GameType;
-import com.globallogic.casino.service.strategy.*;
+import com.globallogic.casino.model.strategy.GameOperationsStrategy;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,8 +29,6 @@ public class Game {
     @OneToOne(mappedBy = "assignedGame")
     @JsonBackReference
     private Employee assignedEmployee;
-    @Transient
-    private transient GameOperationsStrategy gameOperationsStrategy;
     @Column(name = "max_players")
     private Integer maxPlayers;
     @Singular
@@ -40,6 +37,7 @@ public class Game {
     private List<Item> necessaryItems;
     @OneToMany(mappedBy = "currentlyPlayedGame")
     @JsonBackReference
+    @Builder.Default
     private List<Customer> players = new LinkedList<>();
     @Column(name = "times_played")
     private Integer timesPlayed;
@@ -47,6 +45,10 @@ public class Game {
     private BigDecimal totalIncome;
     @Column(name = "average_income_per_game")
     private BigDecimal averageIncomePerGame;
+    @Transient
+    private GameOperationsStrategy gameOperationsStrategy;
+    @Transient
+    private String gameResultMessage;
 
     public Game createGame() {
         return this;

@@ -1,6 +1,5 @@
-package com.globallogic.casino.model.entity;
+package com.globallogic.casino.model.entity.h2;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.globallogic.casino.model.enums.ItemCondition;
 import com.globallogic.casino.model.enums.ItemType;
@@ -18,6 +17,7 @@ import javax.persistence.*;
 public class Item {
     @Id
     @Column(name = "item_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemId;
     @Enumerated(EnumType.STRING)
     private ItemType itemType;

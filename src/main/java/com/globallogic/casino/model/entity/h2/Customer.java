@@ -1,4 +1,4 @@
-package com.globallogic.casino.model.entity;
+package com.globallogic.casino.model.entity.h2;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.globallogic.casino.model.Person;
@@ -19,11 +19,11 @@ import java.time.LocalDateTime;
 @Table(name = "CUSTOMERS")
 public class Customer extends Person {
     @Id
-    @GeneratedValue(generator = "customers_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
     private Long customerId;
     @Column(name = "current_balance")
-    private BigDecimal currentBalanceInTokens;
+    private BigDecimal currentBalance;
     @Column(name = "last_time_present")
     private LocalDateTime lastTimePresent;
     @ManyToOne

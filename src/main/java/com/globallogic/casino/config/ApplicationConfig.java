@@ -5,7 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.globallogic.casino.model.dto.CustomerDto;
+import com.globallogic.casino.model.dto.EmployeeDto;
+import com.globallogic.casino.model.entity.h2.Customer;
+import com.globallogic.casino.model.entity.h2.Employee;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,6 +27,13 @@ public class ApplicationConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.typeMap(Employee.class, EmployeeDto.class)
+                .addMapping(employee -> employee.getAssignedGame().getGameId(), EmployeeDto::setAssignedGameId)
+                .addMapping(employee -> employee.getAssignedGame().getGameType(), EmployeeDto::setAssignedGameType);
+        modelMapper.typeMap(Customer.class, CustomerDto.class)
+                .addMapping(customer -> customer.getCurrentlyPlayedGame().getGameId(), CustomerDto::setCurrentlyPlayedGameId)
+                .addMapping(customer -> customer.getCurrentlyPlayedGame().getGameType(), CustomerDto::setCurrentlyPlayedGameType);
+        return modelMapper;
     }
 }

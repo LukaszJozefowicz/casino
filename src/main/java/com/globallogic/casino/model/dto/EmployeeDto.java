@@ -1,6 +1,7 @@
 package com.globallogic.casino.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.globallogic.casino.model.enums.GameType;
 import com.globallogic.casino.model.enums.WorkPosition;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,5 +19,6 @@ public class EmployeeDto {
     private LocalDate contractStartDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate contractEndDate;
-    private GameDto assignedGame;
+    private Long assignedGameId;
+    private GameType assignedGameType;
 }

@@ -1,4 +1,4 @@
-package com.globallogic.casino.model.entity;
+package com.globallogic.casino.model.entity.h2;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.globallogic.casino.model.Person;
@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Table(name = "EMPLOYEES")
 public class Employee extends Person {
     @Id
-    @GeneratedValue(generator = "employees_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
     private Long employeeId;
     private BigDecimal salary;
