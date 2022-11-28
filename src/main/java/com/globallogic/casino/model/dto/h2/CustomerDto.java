@@ -1,4 +1,4 @@
-package com.globallogic.casino.model.dto;
+package com.globallogic.casino.model.dto.h2;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.globallogic.casino.model.enums.GameType;
@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 public class CustomerDto {
     private Long customerId;
+    private String fullName;
     private BigDecimal currentBalance;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastTimePresent;

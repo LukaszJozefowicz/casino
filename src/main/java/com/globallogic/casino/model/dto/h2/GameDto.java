@@ -1,7 +1,5 @@
-package com.globallogic.casino.model.dto;
+package com.globallogic.casino.model.dto.h2;
 
-import com.globallogic.casino.model.entity.h2.Customer;
-import com.globallogic.casino.model.entity.h2.Item;
 import com.globallogic.casino.model.enums.GameType;
 import lombok.Getter;
 import lombok.Setter;

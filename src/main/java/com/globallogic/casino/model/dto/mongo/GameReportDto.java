@@ -1,13 +1,11 @@
-package com.globallogic.casino.model.entity.mongo;
+package com.globallogic.casino.model.dto.mongo;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
-public class GameReport {
+public class GameReportDto {
     private Integer timesPlayed;
     private String totalIncome;
     private String averageIncomePerGame;

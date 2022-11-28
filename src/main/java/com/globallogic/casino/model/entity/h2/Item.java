@@ -16,7 +16,6 @@ import javax.persistence.*;
 @Table(name = "ITEMS")
 public class Item {
     @Id
-    @Column(name = "item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemId;
     @Enumerated(EnumType.STRING)
@@ -26,6 +25,6 @@ public class Item {
     private Boolean isAssigned;
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name="game_id")
+    @JoinColumn(name="gameId")
     private Game assignedToGame;
 }

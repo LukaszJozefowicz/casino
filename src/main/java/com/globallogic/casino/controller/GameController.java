@@ -1,7 +1,7 @@
 package com.globallogic.casino.controller;
 
-import com.globallogic.casino.model.dto.GameDto;
-import com.globallogic.casino.model.dto.ItemDto;
+import com.globallogic.casino.model.dto.h2.GameDto;
+import com.globallogic.casino.model.dto.h2.ItemsCheckResponseDto;
 import com.globallogic.casino.model.entity.h2.Game;
 import com.globallogic.casino.model.factory.BlackJackCreator;
 import com.globallogic.casino.model.factory.PokerCreator;
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,13 +35,34 @@ public class GameController {
         return newPokerGame;
     }
 
+    @PostMapping("/addRouletteGame")
+    public GameDto addRouletteGame() {
+        GameDto newRouletteGame = gameService.createGame(rouletteCreator);
+        itemService.saveItemsAfterAssignedToGame(modelMapper.map(newRouletteGame, Game.class));
+        return newRouletteGame;
+    }
+
+    @PostMapping("/addBlackJackGame")
+    public GameDto addBlackJackGame() {
+        GameDto newBlackJackGame = gameService.createGame(blackJackCreator);
+        itemService.saveItemsAfterAssignedToGame(modelMapper.map(newBlackJackGame, Game.class));
+        return newBlackJackGame;
+    }
+
+    @PostMapping("/addSlotMachineGame")
+    public GameDto addSlotMachineGame() {
+        GameDto newSlotMachineGame = gameService.createGame(slotMachineCreator);
+        itemService.saveItemsAfterAssignedToGame(modelMapper.map(newSlotMachineGame, Game.class));
+        return newSlotMachineGame;
+    }
+
     @PutMapping("/{gameId}/simulate")
-    public String simulateGame(@PathVariable Long gameId, @RequestParam Long playerBet) {
+    public String simulateGame(@PathVariable Long gameId, @RequestParam BigDecimal playerBet) {
         return gameService.simulateGame(gameId, playerBet);
     }
 
     @GetMapping("/{gameId}/checkItems")
-    public List<ItemDto> checkItems(@PathVariable Long gameId) {
+    public ItemsCheckResponseDto checkItems(@PathVariable Long gameId) {
         return gameService.checkGameItems(gameId);
     }
 

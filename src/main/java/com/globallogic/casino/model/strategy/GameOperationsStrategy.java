@@ -7,7 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
+import java.util.Random;
 
 import static com.globallogic.casino.model.enums.ItemCondition.POOR;
 
@@ -18,7 +21,7 @@ public abstract class GameOperationsStrategy {
 
     private Game game;
 
-    public abstract Game simulateGame(long playerBet);
+    public abstract Game simulateGame(BigDecimal playerBet);
     public abstract boolean checkItems();
 
     public boolean checkItems(List<ItemType> itemsNeeded) {
@@ -29,5 +32,26 @@ public abstract class GameOperationsStrategy {
                 .map(Item::getItemCondition)
                 .noneMatch(itemCondition -> itemCondition.equals(POOR));
         return areAllItemsPresent && areAllItemsInGoodCondition;
+    }
+
+    public boolean isWinByPercentage(int winPercentage) {
+        int randomPercentage = new Random().nextInt(100) + 1;
+        return randomPercentage <= winPercentage;
+    }
+
+    public void updateItemsCondition(Game game) {
+        if (game.getTimesPlayed() % 3 == 0) {
+            for (Item item : game.getNecessaryItems()) {
+                item.setItemCondition(item.getItemCondition().getOneLowerCondition());
+            }
+        }
+    }
+
+    public void updateAfterGameCommonParams(Game game, BigDecimal totalAmountForCasino) {
+        game.setTimesPlayed(game.getTimesPlayed() + 1);
+        game.setTotalIncome(game.getTotalIncome().add(totalAmountForCasino));
+        game.setAverageIncomePerGame(game.getTotalIncome()
+                .divide(BigDecimal.valueOf(getGame().getTimesPlayed()), new MathContext(15)));
+        updateItemsCondition(game);
     }
 }

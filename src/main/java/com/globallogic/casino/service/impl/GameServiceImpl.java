@@ -1,23 +1,21 @@
 package com.globallogic.casino.service.impl;
 
 import com.globallogic.casino.exception.EntityNotFoundException;
-import com.globallogic.casino.model.dto.GameDto;
-import com.globallogic.casino.model.dto.ItemDto;
-import com.globallogic.casino.model.entity.h2.Customer;
+import com.globallogic.casino.model.dto.h2.GameDto;
+import com.globallogic.casino.model.dto.h2.ItemDto;
+import com.globallogic.casino.model.dto.h2.ItemsCheckResponseDto;
 import com.globallogic.casino.model.entity.h2.Game;
 import com.globallogic.casino.model.strategy.*;
 import com.globallogic.casino.repository.CustomerRepository;
 import com.globallogic.casino.repository.GameRepository;
 import com.globallogic.casino.service.GameService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GameServiceImpl implements GameService {
@@ -33,7 +31,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public String simulateGame(Long gameId, long playerBet) {
+    public String simulateGame(Long gameId, BigDecimal playerBet) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException(Game.class, gameId));
 
@@ -45,26 +43,25 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<ItemDto> checkGameItems(Long gameId) {
+    public ItemsCheckResponseDto checkGameItems(Long gameId) {
+        final String itemsCheckWrongMsg = "Check the items in game with id: %d. " +
+                "Either at least one is missing or is in poor condition and needs replacing.";
+        final String itemsCheckOkMsg = "All necessary items for game with id: %d checked." +
+                " All are present and in sufficient condition.";
+
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException(Game.class, gameId));
         GameOperationsStrategy currentStrategy = getStrategyByGameType(game);
 
-        if (!currentStrategy.checkItems()) {
-            log.warn("Check the items in game with id: "
-                    + gameId + ". Either at least one is missing or is in poor condition" +
-                    " and needs replacing.");
-        }
-        log.info("All items for game with id: " + gameId + " checked.");
-
-        return game.getNecessaryItems().stream()
-                .map(item -> modelMapper.map(item, ItemDto.class))
-                .collect(Collectors.toList());
+        return ItemsCheckResponseDto.builder()
+                .message(currentStrategy.checkItems()
+                        ? String.format(itemsCheckOkMsg, gameId)
+                        : String.format(itemsCheckWrongMsg, gameId))
+                .items(game.getNecessaryItems().stream()
+                        .map(item -> modelMapper.map(item, ItemDto.class))
+                        .collect(Collectors.toList()))
+                .build();
     }
-
-//    private void updateGameParticipantsData(List<Customer> players) {
-//        customerRepository.saveAll(players);
-//    }
 
     private GameOperationsStrategy getStrategyByGameType(Game game) {
         return switch (game.getGameType()) {

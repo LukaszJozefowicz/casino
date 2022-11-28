@@ -1,6 +1,7 @@
 package com.globallogic.casino.model.entity.h2;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.globallogic.casino.model.enums.GameType;
 import com.globallogic.casino.model.strategy.GameOperationsStrategy;
 import lombok.*;
@@ -17,19 +18,18 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "GAMES")
+@JsonIgnoreProperties({"players", "necessaryItems", "assignedEmployee"})
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "game_id")
     private Long gameId;
     @Enumerated(EnumType.STRING)
-    @Column(name = "game_type")
+    @Column(nullable = false)
     private GameType gameType;
-//    @JoinColumn(name = "assigned_employee_id", referencedColumnName = "employee_id")
     @OneToOne(mappedBy = "assignedGame")
-    @JsonBackReference
+    @JsonBackReference(value = "emp-game-ref")
     private Employee assignedEmployee;
-    @Column(name = "max_players")
+    @Column(nullable = false)
     private Integer maxPlayers;
     @Singular
     @OneToMany(mappedBy = "assignedToGame")
@@ -39,14 +39,12 @@ public class Game {
     @JsonBackReference
     @Builder.Default
     private List<Customer> players = new LinkedList<>();
-    @Column(name = "times_played")
+    @Column(nullable = false)
     private Integer timesPlayed;
-    @Column(name = "total_income")
+    @Column(nullable = false)
     private BigDecimal totalIncome;
-    @Column(name = "average_income_per_game")
+    @Column(nullable = false)
     private BigDecimal averageIncomePerGame;
-    @Transient
-    private GameOperationsStrategy gameOperationsStrategy;
     @Transient
     private String gameResultMessage;
 

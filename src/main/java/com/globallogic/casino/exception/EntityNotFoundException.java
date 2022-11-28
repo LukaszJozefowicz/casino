@@ -15,9 +15,6 @@ public class EntityNotFoundException extends RuntimeException {
         super(String.format("Entity [%s] with id [%d] not found.", clazz.getSimpleName(), id));
     }
 
-    public EntityNotFoundException(String message) {
-        super(message);
-    }
     public EntityNotFoundException(String message, ItemType itemType) {
         super(String.format(message, itemType));
     }

@@ -1,4 +1,4 @@
-package com.globallogic.casino.model.dto;
+package com.globallogic.casino.model.dto.h2;
 
 import com.globallogic.casino.model.enums.ItemCondition;
 import com.globallogic.casino.model.enums.ItemType;

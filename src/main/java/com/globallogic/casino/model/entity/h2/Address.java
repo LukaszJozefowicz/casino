@@ -17,9 +17,12 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressId;
+    @Column(nullable = false)
     private String city;
     private String street;
+    @Column(nullable = false)
     private Integer houseNumber;
     private String flatNumber;
+    @Column(nullable = false)
     private String postCode;
 }

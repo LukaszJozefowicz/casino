@@ -1,7 +1,7 @@
 package com.globallogic.casino.model.entity.h2;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.globallogic.casino.model.Person;
 import com.globallogic.casino.model.enums.WorkPosition;
 import lombok.*;
 
@@ -15,25 +15,19 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "EMPLOYEES")
+@JsonIgnoreProperties("assignedGame")
 public class Employee extends Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "employee_id")
     private Long employeeId;
     private BigDecimal salary;
-    @Column(name = "work_position")
     @Enumerated(EnumType.STRING)
     private WorkPosition workPosition;
-    @Column(name = "contract_start_date")
+    @Column(nullable = false)
     private LocalDate contractStartDate;
-    @Column(name = "contract_end_date")
     private LocalDate contractEndDate;
     @OneToOne
-    @JsonManagedReference
-    @JoinTable(name = "employee_game",
-            joinColumns =
-                    { @JoinColumn(name = "assigned_employee_id", referencedColumnName = "employee_id") },
-            inverseJoinColumns =
-                    { @JoinColumn(name = "assigned_game_id", referencedColumnName = "game_id") })
+    @JoinColumn(name = "assigned_game_id", referencedColumnName = "gameId")
+    @JsonManagedReference(value = "emp-game-ref")
     private Game assignedGame;
 }

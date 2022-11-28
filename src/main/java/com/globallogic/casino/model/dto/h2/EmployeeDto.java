@@ -1,4 +1,4 @@
-package com.globallogic.casino.model.dto;
+package com.globallogic.casino.model.dto.h2;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.globallogic.casino.model.enums.GameType;
@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Setter
 public class EmployeeDto {
     private Long employeeId;
+    private String fullName;
     private BigDecimal salary;
     private WorkPosition workPosition;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

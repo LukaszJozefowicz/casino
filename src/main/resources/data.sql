@@ -5,11 +5,11 @@ INSERT INTO ADDRESSES (city, street, house_number, flat_number, post_code) VALUE
 ('Wroclaw', '4th street', 56, '3A', '51-400');
 
 INSERT INTO EMPLOYEES (universal_id, first_name, last_name, work_position, salary, contract_start_date, contract_end_date, address_id) VALUES
-('123', 'John', 'Wick', 'MANAGER', 15000.0, '2022-01-01 00.00.01', '2022-12-30 23.59.59', 1),
-('123', 'John', '1st', 'POKER_ATTENDANT', 8000.0, '2022-01-01 00.00.01', '2022-12-30 23.59.59', 1),
-('124', 'John', '2nd', 'SLOT_MACHINES_ATTENDANT', 8000.0, '2022-01-01 00.00.01', '2022-12-30 23.59.59', 1),
-('125', 'John', '3rd', 'MULTI_SKILL_CARDS', 10000.0, '2022-01-01 00.00.01', '2022-12-30 23.59.59', 1),
-('126', 'John', 'Best', 'MULTI_SKILL_ALL', 13000.0, '2022-01-01 00.00.01', null, 3);
+('123', 'John', 'Wick', 'MANAGER', 15000.0, '2022-01-01', '2022-12-30', 1),
+('123', 'John', '1st', 'POKER_ATTENDANT', 8000.0, '2022-01-01', '2022-12-30', 1),
+('124', 'John', '2nd', 'SLOT_MACHINES_ATTENDANT', 8000.0, '2022-01-01', '2022-12-30', 1),
+('125', 'John', '3rd', 'MULTI_SKILL_CARDS', 10000.0, '2022-01-01', '2022-12-30', 1),
+('126', 'John', 'Best', 'MULTI_SKILL_ALL', 13000.0, '2022-01-01', null, 3);
 
 INSERT INTO CUSTOMERS (universal_id, first_name, last_name, current_balance, last_time_present, address_id) VALUES
 ('666', 'John', 'Smith', 5000.0, '2022-11-20 14.00.00', 2),
